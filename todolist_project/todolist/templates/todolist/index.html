@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+</head>
+<body>
+    <h1>MY ToDo List</h1>
+    <h2>할일 작성</h2>
+    <form action="{% url 'add_task' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="title">
+        <button type="submit">!!NEW!!</button>
+    </form>
+    <h2>해야할 일</h2>
+    <ul>
+        {% for task in todo_list %}
+        <li>
+            <form action="{% url 'complete_task' task.id %}" method="post">
+                {% csrf_token %}
+                <input type="checkbox" onchange="this.form.submit()" {% if task.completed %} checked {% endif %}>
+                {{ task.title }}
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>완료</h2>
+    <ul>
+        {% for task in completed_list %}
+        <li>{{ task.title }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
